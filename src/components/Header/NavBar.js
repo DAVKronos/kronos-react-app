@@ -7,7 +7,7 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-                <Nav.Link as={NavLink} to="/">Home</Nav.Link>
+                <Nav.Link as={NavLink} to="/" exact>Home</Nav.Link>
                 <NavDropdown title="Vereninging" id="basic-nav-dropdown">
                     <NavDropdown.Item  href="#action/3.1">Action</NavDropdown.Item>
                 </NavDropdown>
@@ -17,7 +17,7 @@ const NavBar = () => {
                 <NavDropdown title="Wedstrijden" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 </NavDropdown>
-                <Nav.Link href="#link">Agenda</Nav.Link>
+                <Nav.Link as={NavLink} to="/agendaitems">Agenda</Nav.Link>
                 <Nav.Link href="#link">Uitslagen</Nav.Link>
                 <Nav.Link href="#link">Foto's</Nav.Link>
             </Nav>

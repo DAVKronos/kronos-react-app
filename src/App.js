@@ -9,7 +9,8 @@ import Container from 'react-bootstrap/Container'
 import Header from "./components/Header/Header";
 import HomePage from "./components/HomePage/HomePage";
 import Footer from "./components/Footer/Footer";
-import NewsItem from "./components/NewsItems/NewsItem";
+import AgendaItemsRouter from "./components/AgendaItems";
+import NewsItemsRouter from "./components/NewsItems";
 
 
 const App = () => {
@@ -19,8 +20,11 @@ const App = () => {
            <Route exact path="/">
                 <HomePage />
            </Route>
-            <Route path="/newsitems/:id">
-                <NewsItem />
+            <Route path="/newsitems">
+                <NewsItemsRouter />
+            </Route>
+            <Route path="/agendaitems">
+                <AgendaItemsRouter />
             </Route>
         </Switch>
 
