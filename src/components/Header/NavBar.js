@@ -1,14 +1,15 @@
 import React from 'react';
 import {Navbar, Nav, NavDropdown} from "react-bootstrap";
+import {NavLink} from 'react-router-dom';
 
 const NavBar = () => {
     return <Navbar className="navbar-kronos" expand="lg">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
+                <Nav.Link as={NavLink} to="/">Home</Nav.Link>
                 <NavDropdown title="Vereninging" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                    <NavDropdown.Item  href="#action/3.1">Action</NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Trainingen" id="basic-nav-dropdown">
                     <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

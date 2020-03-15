@@ -1,6 +1,6 @@
 import React from 'react'
 import {Row, Col} from 'react-bootstrap';
-import NewsItems from "./NewsItems";
+import NewsItems from "./HomePageNewsItems";
 import AgendaItemsSidebar from "./AgendaItemsSidebar";
 import StravaSidebar from "./StravaSidebar";
 
