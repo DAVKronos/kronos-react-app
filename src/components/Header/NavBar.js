@@ -18,8 +18,8 @@ const NavBar = () => {
                     <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 </NavDropdown>
                 <Nav.Link as={NavLink} to="/agendaitems">Agenda</Nav.Link>
-                <Nav.Link href="#link">Uitslagen</Nav.Link>
-                <Nav.Link href="#link">Foto's</Nav.Link>
+                <Nav.Link as={NavLink} to="/uitslagen">Uitslagen</Nav.Link>
+                <Nav.Link as={NavLink} to="/photoalbums">Foto's</Nav.Link>
             </Nav>
             <Nav className="justify-content-end">
                 <NavDropdown title="Login" id="basic-nav-dropdown">

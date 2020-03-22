@@ -11,6 +11,7 @@ import HomePage from "./components/HomePage/HomePage";
 import Footer from "./components/Footer/Footer";
 import AgendaItemsRouter from "./components/AgendaItems";
 import NewsItemsRouter from "./components/NewsItems";
+import PhotoAlbumsRouter from './components/PhotoAlbums'
 
 
 const App = () => {
@@ -25,6 +26,9 @@ const App = () => {
             </Route>
             <Route path="/agendaitems">
                 <AgendaItemsRouter />
+            </Route>
+            <Route path="/photoalbums">
+                <PhotoAlbumsRouter />
             </Route>
         </Switch>
 
