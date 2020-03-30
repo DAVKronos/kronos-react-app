@@ -1,17 +1,20 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col, Image} from 'react-bootstrap';
 
 const ShortNewsItem = ({item}) => {
     return <Row>
         <Col md={3} style={{display: 'flex'}}>
-            <img className="align-self-center" src={item.url} alt={item.title} style={{width: '100%'}}/></Col>
+            <Link to={`/newsitems/${item.id}`} className="align-self-center">
+                <Image className="d-block w-100" src={item.small_img} alt={item.title} thumbnail/>
+            </Link>
+            </Col>
         <Col md={9}>
             <header>
-                <h2>{item.title}</h2>
+                <Link to={`/newsitems/${item.id}`}><h2>{item.title}</h2></Link>
                 <p>{item.date} | {item.author}</p>
             </header>
-            <p>{item.text}</p>
+            <p>{item.text.split('\n')[0]}</p>
             <Link to={`/newsitems/${item.id}`}>Read more</Link>
         </Col>
     </Row>

@@ -3,7 +3,7 @@ import {Navbar, Nav, NavDropdown} from "react-bootstrap";
 import {NavLink} from 'react-router-dom';
 
 const NavBar = () => {
-    return <Navbar className="navbar-kronos" expand="lg">
+    return <Navbar id="navbar-kronos" expand="lg">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
