@@ -1,51 +1,29 @@
 import React from "react";
 import ShortNewsItem from "./ShortNewsItem";
 import NewsItemCarousel from "./NewsItemCarousel";
-import axios from 'axios';
-
-const NEWSITEMS = [
-    {
-        id: 1,
-        title: "NSK Indoor",
-        text: "Een grote groene delegatie Kronauten reisde af naar Apeldoorn voor het NSK Indoor. Onder hen een aantal indoorveteranen voor wie het Omnisport inmiddels een soort tweede thuis is geworden en een aantal nieuwelingen. Gelukkig zorgde tourguide Marjolein ervoor dat ook zij zich binnen de kortste keren bekend voelden in het immense complex. Het beloofde een wisselvallige dag te worden met medailles, clubrecords, vele persoonlijke records maar ook wat teleurstellingen. \n Hallo",
-        date: "2020-03-03 15:01",
-        author: "Kegel",
-        small_img: "https://kronos.nl/system/articlephotos/811f919e98db6c8b14053259e1cf1b600f222464.jpg?1583244102",
-        large_img: "https://kronos.nl/system/articlephotos/b09128789951caa999bac7c2f5724f9f4d5c7a39.jpg?1583244102"
-
-    },
-    {
-        id:2,
-        title: "NSK Indoor",
-        text: "Een grote groene delegatie Kronauten reisde af naar Apeldoorn voor het NSK Indoor. Onder hen een aantal indoorveteranen voor wie het Omnisport inmiddels een soort tweede thuis is geworden en een aantal nieuwelingen. Gelukkig zorgde tourguide Marjolein ervoor dat ook zij zich binnen de kortste keren bekend voelden in het immense complex. Het beloofde een wisselvallige dag te worden met medailles, clubrecords, vele persoonlijke records maar ook wat teleurstellingen. \n Hallo",
-        date: "2020-03-03 15:01",
-        author: "Kegel",
-        small_img: "https://kronos.nl/system/articlephotos/811f919e98db6c8b14053259e1cf1b600f222464.jpg?1583244102",
-        large_img: "https://kronos.nl/system/articlephotos/b09128789951caa999bac7c2f5724f9f4d5c7a39.jpg?1583244102"
-    },{
-        id: 3,
-        title: "NSK Indoor",
-        text: "Een grote groene delegatie Kronauten reisde af naar Apeldoorn voor het NSK Indoor. Onder hen een aantal indoorveteranen voor wie het Omnisport inmiddels een soort tweede thuis is geworden en een aantal nieuwelingen. Gelukkig zorgde tourguide Marjolein ervoor dat ook zij zich binnen de kortste keren bekend voelden in het immense complex. Het beloofde een wisselvallige dag te worden met medailles, clubrecords, vele persoonlijke records maar ook wat teleurstellingen.",
-        date: "2020-03-03 15:01",
-        author: "Kegel",
-        small_img: "https://kronos.nl/system/articlephotos/811f919e98db6c8b14053259e1cf1b600f222464.jpg?1583244102",
-        large_img: "https://kronos.nl/system/articlephotos/b09128789951caa999bac7c2f5724f9f4d5c7a39.jpg?1583244102"
-    }
-];
+import {Spinner} from 'react-bootstrap';
+import {NewsItemsCollection} from "../../utils/rest-helper";
 
 class NewsItems extends React.Component {
+    state = {
+        items: [],
+        loading: true
+    }
 
     async componentDidMount() {
-        let config = {
-            headers: {'Access-Control-Allow-Origin': '*'}
-        };
-        let response =  await axios.get('http://localhost:3000/newsitems', config);
-        console.log(response.data);
+        let items = await NewsItemsCollection.getAll();
+        this.setState({items, loading: false});
     }
 
 
     render() {
-        const items = NEWSITEMS;
+        if (this.state.loading) {
+            return <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+            </Spinner>;
+        }
+
+        const items = this.state.items;
 
 
         return <div>
@@ -55,6 +33,6 @@ class NewsItems extends React.Component {
             })}
         </div>
     }
-};
+}
 
 export default NewsItems;

@@ -8,8 +8,7 @@ const NewsItemsRouter = () => {
         <Route exact path="/newsitems">
             <NewsItems/>
         </Route>
-        <Route path="/newsitems/:id">
-            <NewsItem/>
+        <Route path="/newsitems/:id" component={NewsItem}>
         </Route>
     </Switch>
 };

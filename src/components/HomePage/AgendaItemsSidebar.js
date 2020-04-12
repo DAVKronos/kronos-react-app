@@ -1,34 +1,38 @@
 import React from "react";
 import AgendaItem from "./AgendaItem";
-import {Card, ListGroup} from 'react-bootstrap';
+import {Card, ListGroup, Spinner} from 'react-bootstrap';
+import {getAgendaItems} from "../../utils/rest-helper";
 
-const date = new Date(2020,6,1);
+class AgendaItemsSideBar extends React.Component  {
+    state = {
+        items: [],
+        loading: true
+    }
 
-const AgendaItemsSideBar = () => {
-    let items = [{
-        id: 1,
-        date: date,
-        title: "Borrel 1",
-        subscriptions: 25
-    }, {
-        id: 2,
-        date: date,
-        title: "Borrel 2",
-        subscriptions: 25
-    }, {
-        id: 3,
-        date: date,
-        title: "Borrel 3",
-        subscriptions: 25
-    }];
+    async componentDidMount() {
+        let items = await getAgendaItems();
+        this.setState({
+            items,
+            loading: false
+        })
+    }
 
-    return <Card className="side-panel">
-        <Card.Header>Agenda</Card.Header>
-        <ListGroup variant='flush'>
-            {items.map(item => (<ListGroup.Item><AgendaItem item={item}/></ListGroup.Item>)
-            )}
-        </ListGroup>
-    </Card>
-};
+    render() {
+        if (this.state.loading) {
+            return <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+            </Spinner>;
+        }
+
+
+        return <Card className="side-panel">
+            <Card.Header>Agenda</Card.Header>
+            <ListGroup variant='flush'>
+                {this.state.items.map(item => (<ListGroup.Item><AgendaItem item={item}/></ListGroup.Item>)
+                )}
+            </ListGroup>
+        </Card>
+    }
+}
 
 export default AgendaItemsSideBar;

@@ -5,11 +5,10 @@ import AgendaItems from "./AgendaItems";
 
 const AgendaItemsRouter = () => {
     return <Switch>
-        <Route exact path="/agendaitems">
-            <AgendaItems/>
+        <Route exact path="/agendaitems" component={AgendaItems}>
+
         </Route>
-        <Route path="/agendaitems/:id">
-            <AgendaItem/>
+        <Route path="/agendaitems/:id" component={AgendaItem}>
         </Route>
     </Switch>
 };

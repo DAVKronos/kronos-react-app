@@ -1,13 +1,14 @@
 import React from "react";
 import {Carousel} from "react-bootstrap";
+import {getAPIHostUrl} from "../../utils/rest-helper";
 
 const NewsItemCaroursel = ({items}) => {
-    return <Carousel>
+    return <Carousel pause={false} interval={3000}>
         {items.map(item => {
             return <Carousel.Item key={item.id} style={{height: 260}}>
                 <img
                     className="d-block w-100"
-                    src={item.large_img}
+                    src={getAPIHostUrl(item.articlephoto_url_carrousel)}
                     alt={item.title}
                 />
                 <Carousel.Caption>
