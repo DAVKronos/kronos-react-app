@@ -4,61 +4,54 @@ const API_HOST = 'http://localhost:3000';
 const config = {
     headers: {'Access-Control-Allow-Origin': '*', 'Accept': 'application/json'}
 };
-class NewsItems {
-    newsItemsObjects = {}
+
+class ObjectCollection {
+    constructor(url) {
+        this.objects =[];
+        this.url = url
+    }
 
     async getAll() {
-        let response =  await axios.get(`${API_HOST}/newsitems/`, config).catch(e => {
+        let response =  await axios.get(`${API_HOST}/${this.url}/`, config).catch(e => {
             return {data: []};
         });
-        response.data.forEach(newsItem => {
-            if (!this.newsItemsObjects[newsItem.id]) {
-                this.newsItemsObjects[newsItem.id] = newsItem;
+        response.data.forEach(object => {
+            if (!this.objects[object.id] || this.objects[object.id]) {
+                this.objects[object.id] = object;
             }
         });
         return response.data;
     }
 
     async get(id) {
-        if (this.newsItemsObjects[id]) {
-            return this.newsItemsObjects[id]
+        if (this.objects[id]) {
+            return this.objects[id]
         }
 
-        let response =  await axios.get(`${API_HOST}/newsitems/${id}`, config).catch(e => {
+        let response =  await axios.get(`${API_HOST}/${this.url}/${id}`, config).catch(e => {
             return {data: null};
         });
         if (response.data){
-            this.newsItemsObjects[id] = response.data;
+            this.objects[id] = response.data;
         }
         return response.data;
     }
 }
 
 
-async function getAgendaItems() {
-    let response =  await axios.get(`${API_HOST}/agendaitems/`, config).catch(e => {
-        return {data: []};
-    });
-    return response.data;
-}
-
-async function getAgendaItem(id) {
-    let response =  await axios.get(`${API_HOST}/agendaitems/${id}`, config).catch(e => {
-        return {data: null};
-    });
-    return response.data;
-}
-
 function getAPIHostUrl(url) {
     return 'http://localhost:3000' + url;
 }
 
-const NewsItemsCollection = new NewsItems();
+const NewsItemsCollection = new ObjectCollection('newsitems');
+const AgendaItemsCollection = new ObjectCollection('agendaitems');
+const PagesCollection = new ObjectCollection('pages')
+
 
 export {
     API_HOST,
     NewsItemsCollection,
-    getAPIHostUrl,
-    getAgendaItem,
-    getAgendaItems
+    AgendaItemsCollection,
+    PagesCollection,
+    getAPIHostUrl
 }

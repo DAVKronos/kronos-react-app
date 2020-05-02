@@ -1,6 +1,6 @@
 import React from 'react';
 import {Col, Row, Card, Spinner} from 'react-bootstrap';
-import {getAgendaItem} from "../../utils/rest-helper";
+import {AgendaItemsCollection} from "../../utils/rest-helper";
 
 class AgendaItem extends React.Component {
     state = {
@@ -10,8 +10,7 @@ class AgendaItem extends React.Component {
 
     async componentDidMount() {
         let {id} = this.props.match.params;
-        let item = await getAgendaItem(id)
-        console.log(item);
+        let item = await AgendaItemsCollection.get(id)
         this.setState({
             item,
             loading: false
@@ -24,17 +23,7 @@ class AgendaItem extends React.Component {
                 <span className="sr-only">Loading...</span>
             </Spinner>;
         }
-
-        let item = {
-            id: 1,
-            date: "2020-06-01 19:30",
-            title: "Borrel 1",
-            description: "Description goes here",
-            agendaitemtype: "Activiteit",
-            commission: "Pilscie",
-            location: "Friends"
-        };
-
+        let {item} = this.state;
         return <React.Fragment>
             <Row>
                 <Col sm={12}>

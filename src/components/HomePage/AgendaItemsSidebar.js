@@ -1,7 +1,7 @@
 import React from "react";
 import AgendaItem from "./AgendaItem";
 import {Card, ListGroup, Spinner} from 'react-bootstrap';
-import {getAgendaItems} from "../../utils/rest-helper";
+import {AgendaItemsCollection} from "../../utils/rest-helper";
 
 class AgendaItemsSideBar extends React.Component  {
     state = {
@@ -10,7 +10,7 @@ class AgendaItemsSideBar extends React.Component  {
     }
 
     async componentDidMount() {
-        let items = await getAgendaItems();
+        let items = await AgendaItemsCollection.getAll();
         this.setState({
             items,
             loading: false
