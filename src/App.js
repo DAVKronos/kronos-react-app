@@ -12,8 +12,9 @@ import Footer from "./components/Footer/Footer";
 import AgendaItemsRouter from "./components/AgendaItems";
 import NewsItemsRouter from "./components/NewsItems";
 import PhotoAlbumsRouter from './components/PhotoAlbums'
+import PagesRouter from './components/Pages'
 
-
+// TODO Add pages with pagetag to the home path
 const App = () => {
     return <Router><Container>
         <Header />
@@ -29,6 +30,10 @@ const App = () => {
             </Route>
             <Route path="/photoalbums">
                 <PhotoAlbumsRouter />
+            </Route>
+
+            <Route path="/pages">
+                <PagesRouter />
             </Route>
         </Switch>
 
