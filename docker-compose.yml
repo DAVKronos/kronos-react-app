@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  kronos-app:
+    container_name: kronos-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - 3001:3001
+    environment:
+      - CHOKIDAR_USEPOLLING=true

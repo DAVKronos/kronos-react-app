@@ -1,5 +1,5 @@
 The kronos app can be build using Docker with the following command
 
-`docker build -t kronos-app .`
+`docker-compose build`
 
-`docker run kronos-app`
+`docker-compose up`
