@@ -46,6 +46,7 @@ function getAPIHostUrl(url) {
 const NewsItemsCollection = new ObjectCollection('newsitems');
 const AgendaItemsCollection = new ObjectCollection('agendaitems');
 const PagesCollection = new ObjectCollection('pages')
+const PhotoAlbumsCollection = new ObjectCollection('photoalbums')
 
 
 export {
@@ -53,5 +54,6 @@ export {
     NewsItemsCollection,
     AgendaItemsCollection,
     PagesCollection,
+    PhotoAlbumsCollection,
     getAPIHostUrl
 }

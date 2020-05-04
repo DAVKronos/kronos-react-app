@@ -9,7 +9,7 @@ const ShortNewsItem = ({item}) => {
             <Link to={`/newsitems/${item.id}`} className="align-self-center">
                 <Image className="d-block w-100" src={getAPIHostUrl(item.articlephoto_url_normal)} alt={item.title} thumbnail/>
             </Link>
-            </Col>
+        </Col>
         <Col md={9}>
             <header>
                 <Link to={`/newsitems/${item.id}`}><h2>{item.title}</h2></Link>

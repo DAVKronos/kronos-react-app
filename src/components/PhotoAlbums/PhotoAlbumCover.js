@@ -8,7 +8,7 @@ const PhotoAlbumCover = ({photoAlbum}) => {
         <Card.Body>
             <Card.Title><Link to={`/photoalbums/${photoAlbum.id}`}>{photoAlbum.name}</Link></Card.Title>
             <Card.Text>
-                {photoAlbum.date}
+                {photoAlbum.created_at}
             </Card.Text>
             {/*<Button >Go somewhere</Button>*/}
         </Card.Body>

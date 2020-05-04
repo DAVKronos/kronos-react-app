@@ -5,9 +5,7 @@ import NewsItem from "./NewsItem";
 
 const NewsItemsRouter = () => {
     return <Switch>
-        <Route exact path="/newsitems">
-            <NewsItems/>
-        </Route>
+        <Route exact path="/newsitems" component={NewsItems} />
         <Route path="/newsitems/:id" component={NewsItem} />
     </Switch>
 };
