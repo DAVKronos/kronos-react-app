@@ -11,8 +11,8 @@ class ObjectCollection {
         this.url = url
     }
 
-    async getAll() {
-        let response =  await axios.get(`${API_HOST}/${this.url}/`, config).catch(e => {
+    async getAll(params) {
+        let response =  await axios.get(`${API_HOST}/${this.url}/`, {...config, params}).catch(e => {
             return {data: []};
         });
         response.data.forEach(object => {
@@ -23,12 +23,12 @@ class ObjectCollection {
         return response.data;
     }
 
-    async get(id) {
+    async get(id, params) {
         if (this.objects[id]) {
             return this.objects[id]
         }
 
-        let response =  await axios.get(`${API_HOST}/${this.url}/${id}`, config).catch(e => {
+        let response =  await axios.get(`${API_HOST}/${this.url}/${id}`, {...config, params}).catch(e => {
             return {data: null};
         });
         if (response.data){
@@ -46,8 +46,26 @@ function getAPIHostUrl(url) {
 const NewsItemsCollection = new ObjectCollection('newsitems');
 const AgendaItemsCollection = new ObjectCollection('agendaitems');
 const PagesCollection = new ObjectCollection('pages')
-const PhotoAlbumsCollection = new ObjectCollection('photoalbums')
 
+class PhotoAlbums extends ObjectCollection {
+    async get(id, params) {
+            if (this.objects[id] && this.objects[id].photos) {
+                return this.objects[id]
+            }
+
+            let response =  await axios.get(`${API_HOST}/${this.url}/${id}`, {...config, params}).catch(e => {
+                return {data: null};
+            });
+            if (response.data && response.data.photoalbum && response.data.photos){
+                this.objects[id] = response.data.photoalbum;
+                this.objects[id].photos = response.data.photos;
+                return this.objects[id];
+            }
+            return response.data;
+    }
+}
+
+const PhotoAlbumsCollection = new PhotoAlbums('photoalbums')
 
 export {
     API_HOST,

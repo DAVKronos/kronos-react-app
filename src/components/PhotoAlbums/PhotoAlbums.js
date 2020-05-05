@@ -6,14 +6,20 @@ import {PhotoAlbumsCollection} from "../../utils/rest-helper";
 
 class PhotoAlbums extends React.Component {
     state = {
-        items: [],
+        photoAlbums: [],
         loading: true
     }
 
     async componentDidMount() {
-        let items = await PhotoAlbumsCollection.getAll();
-        console.log(items);
-        this.setState({items, loading: false})
+        let photoAlbums = await PhotoAlbumsCollection.getAll();
+        this.setState({photoAlbums, loading: false})
+        if (photoAlbums && photoAlbums.length > 0){
+            photoAlbums = await Promise.all(photoAlbums.map((item, index) => {
+                return PhotoAlbumsCollection.get(item.id)
+            }));
+            console.log(photoAlbums);
+            this.setState({photoAlbums})
+        }
     }
 
     render() {
@@ -30,7 +36,7 @@ class PhotoAlbums extends React.Component {
                 <Col><h1>Fotoalbum</h1></Col>
             </Row>
             <Row>
-                {this.state.items.map(photoAlbum => {
+                {this.state.photoAlbums.map(photoAlbum => {
                     return <Col key={photoAlbum.id} sm={6} md={4}>
                         <PhotoAlbumCover photoAlbum={photoAlbum}/>
                     </Col>
