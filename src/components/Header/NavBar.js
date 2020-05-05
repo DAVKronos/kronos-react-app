@@ -22,7 +22,7 @@ class NavBar extends React.Component {
     getPageLinksForMenu(title) {
         // TODO Fix path to pagetag instead of id
         return this.getPagesForMenu(title).map(page => {
-            return <NavDropdown.Item as={NavLink} to={`/pages/${page.id}`}>{page.pagetag}</NavDropdown.Item>
+            return <NavDropdown.Item key={page.pagetag} as={NavLink} to={`/${page.pagetag}`}>{page.pagetag}</NavDropdown.Item>
         })
     }
 

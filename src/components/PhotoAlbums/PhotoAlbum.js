@@ -1,45 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Row, Col, Card, Pagination, Spinner} from 'react-bootstrap';
-import {getAPIHostUrl, PhotoAlbumsCollection, PhotosCollection} from "../../utils/rest-helper";
-
-const photoAlbums = {
-    1: {
-        id: 1,
-        name: "Campusloop 1",
-        date: "2019-04-01",
-        photos: [{
-            id: 1,
-            image: "https://kronos.nl/system/photos/afb23a812fbd65321a9e3ccc35a10f467abf5555.JPG?1569313592"
-        }, {
-            id: 2,
-            image: "https://kronos.nl/system/photos/afb23a812fbd65321a9e3ccc35a10f467abf5555.JPG?1569313592"
-        }]
-    }, 2: {
-        id: 2,
-        name: "Campusloop 2",
-        date: "2019-04-01",
-        photos: [{
-            id: 1,
-            image: "https://kronos.nl/system/photos/afb23a812fbd65321a9e3ccc35a10f467abf5555.JPG?1569313592"
-        }, {
-            id: 2,
-            image: "https://kronos.nl/system/photos/afb23a812fbd65321a9e3ccc35a10f467abf5555.JPG?1569313592"
-        }]
-    }, 3: {
-        id: 3,
-        name: "Campusloop 3",
-        date: "2019-04-01",
-        photos: [{
-            id: 1,
-            image: "https://kronos.nl/system/photos/afb23a812fbd65321a9e3ccc35a10f467abf5555.JPG?1569313592"
-        }, {
-            id: 2,
-            image: "https://kronos.nl/system/photos/afb23a812fbd65321a9e3ccc35a10f467abf5555.JPG?1569313592"
-        }]
-    }
-};
-
+import {getAPIHostUrl, PhotoAlbumsCollection} from "../../utils/rest-helper";
 
 // TODO convert to real data
 class PhotoAlbum extends React.Component {

@@ -35,6 +35,9 @@ const App = () => {
             <Route path="/pages">
                 <PagesRouter />
             </Route>
+            <Route path="/:pagetag">
+                <PagesRouter />
+            </Route>
         </Switch>
 
         <Footer />

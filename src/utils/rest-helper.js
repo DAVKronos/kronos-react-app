@@ -45,7 +45,7 @@ function getAPIHostUrl(url) {
 
 const NewsItemsCollection = new ObjectCollection('newsitems');
 const AgendaItemsCollection = new ObjectCollection('agendaitems');
-const PagesCollection = new ObjectCollection('pages')
+const PagesCollection = new ObjectCollection('pages');
 
 class PhotoAlbums extends ObjectCollection {
     async get(id, params) {
@@ -65,7 +65,8 @@ class PhotoAlbums extends ObjectCollection {
     }
 }
 
-const PhotoAlbumsCollection = new PhotoAlbums('photoalbums')
+const PhotoAlbumsCollection = new PhotoAlbums('photoalbums');
+const AgendaItemTypesCollection = new ObjectCollection('agendaitemtypes')
 
 export {
     API_HOST,
@@ -73,5 +74,6 @@ export {
     AgendaItemsCollection,
     PagesCollection,
     PhotoAlbumsCollection,
+    AgendaItemTypesCollection,
     getAPIHostUrl
 }
