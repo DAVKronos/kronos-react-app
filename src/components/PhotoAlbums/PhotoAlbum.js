@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Row, Col, Card, Pagination, Spinner} from 'react-bootstrap';
 import {getAPIHostUrl, PhotoAlbumsCollection} from "../../utils/rest-helper";
+import format from '../../utils/date-format';
 
 // TODO convert to real data
 class PhotoAlbum extends React.Component {
@@ -52,10 +53,11 @@ class PhotoAlbum extends React.Component {
 
         let photosPage = photos.slice((page-1)*photosPerPage, page * photosPerPage);
 
+        let date = new Date(photoAlbum.created_at);
         return <React.Fragment>
             <Row><Col>
                 <h1>{photoAlbum.name}</h1>
-                <p>aangemaakt: {photoAlbum.created_at}</p>
+                <p>aangemaakt: {format(date, 'PPP p')}</p>
             </Col></Row>
             <Row>
                 {photosPage && photosPage.map(photo => {

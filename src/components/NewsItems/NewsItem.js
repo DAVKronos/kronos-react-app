@@ -1,6 +1,7 @@
 import React from "react";
 import {Row, Col, Spinner} from 'react-bootstrap';
 import {getAPIHostUrl, NewsItemsCollection} from "../../utils/rest-helper";
+import format from '../../utils/date-format';
 
 
 class NewsItem extends React.Component {
@@ -23,11 +24,12 @@ class NewsItem extends React.Component {
         }
 
         let item = this.state.item;
+        let date = new Date(item.created_at);
         return <React.Fragment>
             <Row>
                 <Col md={{span: 8, offset: 2}}>
                     <h1>{item.title}</h1>
-                    <p>{item.created_at} | {item.user.name}</p>
+                    <p>{format(date, 'PPP p')} | {item.user.name}</p>
                 </Col>
             </Row>
             <Row>

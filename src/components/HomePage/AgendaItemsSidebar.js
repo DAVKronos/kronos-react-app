@@ -24,12 +24,12 @@ class AgendaItemsSideBar extends React.Component  {
             </Spinner>;
         }
 
+        let {items} = this.state;
 
         return <Card className="side-panel">
             <Card.Header>Agenda</Card.Header>
             <ListGroup variant='flush'>
-                {this.state.items.map(item => (<ListGroup.Item><AgendaItem item={item}/></ListGroup.Item>)
-                )}
+                {items.map(item => (<ListGroup.Item><AgendaItem item={item}/></ListGroup.Item>))}
             </ListGroup>
         </Card>
     }
