@@ -2,6 +2,7 @@ import React from 'react';
 import {Navbar, Nav, NavDropdown} from "react-bootstrap";
 import {NavLink} from 'react-router-dom';
 import {PagesCollection} from "../../utils/rest-helper";
+import LoginMenu from "./LoginMenu";
 
 class NavBar extends React.Component {
     state = {
@@ -49,8 +50,8 @@ class NavBar extends React.Component {
                     <Nav.Link as={NavLink} to="/contact">Contact</Nav.Link>
                 </Nav>
                 <Nav className="justify-content-end">
-                    <NavDropdown title="Login" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                    <NavDropdown title="Login" id="basic-nav-dropdown" alignRight>
+                        <LoginMenu/>
                     </NavDropdown>
                 </Nav>
 
