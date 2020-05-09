@@ -23,8 +23,8 @@ class ObjectCollection {
         return response.data;
     }
 
-    async get(id, params) {
-        if (this.objects[id]) {
+    async get(id, params, force=false) {
+        if (this.objects[id] && !force) {
             return this.objects[id]
         }
 
