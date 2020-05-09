@@ -18,6 +18,7 @@ import PagesRouter from './components/Pages'
 const App = () => {
     return <Router><Container>
         <Header />
+        <div className='main'>
         <Switch>
            <Route exact path="/">
                 <HomePage />
@@ -39,7 +40,7 @@ const App = () => {
                 <PagesRouter />
             </Route>
         </Switch>
-
+        </div>
         <Footer />
     </Container>
     </Router>

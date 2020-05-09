@@ -1,33 +1,48 @@
 import React from 'react';
 import {Col, Row, Card, Spinner} from 'react-bootstrap';
-import {AgendaItemsCollection} from "../../utils/rest-helper";
+import {AgendaItemsCollection, AgendaItemTypesCollection} from "../../utils/rest-helper";
+
+import format from '../../utils/date-format';
 
 class AgendaItem extends React.Component {
     state = {
-        item: null,
-        loading: true
+        agendaItem: null,
+        loading: true,
+        agendaItemType: null,
+        commission: null
     }
 
     async componentDidMount() {
         let {id} = this.props.match.params;
-        let item = await AgendaItemsCollection.get(id)
+        let agendaItem = await AgendaItemsCollection.get(id)
         this.setState({
-            item,
+            agendaItem,
             loading: false
         })
+        if (agendaItem && agendaItem.agendaitemtype_id) {
+            let agendaItemType = await AgendaItemTypesCollection.get(agendaItem.agendaitemtype_id);
+            this.setState({agendaItemType})
+        }
+        if (agendaItem && agendaItem.commission_id) {
+            let commission = await AgendaItemTypesCollection.get(agendaItem.commission_id);
+            this.setState({commission})
+        }
     }
 
     render() {
-        if (this.state.loading || !this.state.item) {
+        if (this.state.loading || !this.state.agendaItem) {
             return <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>;
         }
-        let {item} = this.state;
+        let {agendaItem, agendaItemType} = this.state;
+        let agendaItemTypeName = agendaItemType && <small>{agendaItemType.name}</small>;
+
+        let date = new Date(agendaItem.date);
         return <React.Fragment>
             <Row>
                 <Col sm={12}>
-                    <h1>{item.title}</h1>
+                    <h1>{agendaItem.name} {agendaItemTypeName}</h1>
                 </Col>
             </Row>
             <Row>
@@ -37,7 +52,7 @@ class AgendaItem extends React.Component {
 
                         </Col>
                         <Col xs={11}>
-                            {item.date}
+                            {format(date, 'PPP p')}
                         </Col>
                     </Row>
                     <Row>
@@ -45,7 +60,7 @@ class AgendaItem extends React.Component {
 
                         </Col>
                         <Col xs={11}>
-                            {item.location}
+                            {agendaItem.location}
                         </Col>
                     </Row>
                     <Row>
@@ -53,26 +68,22 @@ class AgendaItem extends React.Component {
 
                         </Col>
                         <Col xs={11}>
-                            {item.commission}
+                            {agendaItem.commission}
                         </Col>
                     </Row>
                     <Row>
-                        <Col xs={1}>
-
-                        </Col>
-                        <Col xs={11}>
-                            {item.description}
-                        </Col>
+                        <Col xs={1}>                 </Col>
+                        <Col xs={11}>{agendaItem.description}</Col>
                     </Row>
                 </Col>
                 <Col md={4}>
                     <Card>
-                        <Card.Header>
-                            Programma
-                        </Card.Header>
-                        <Card.Body>
-                            Geen Programma
-                        </Card.Body>
+                        <Card.Header>Programma</Card.Header>
+                        <Card.Body> Geen Programma</Card.Body>
+                    </Card>
+                    <Card style={{marginTop: 20}}>
+                        <Card.Header>Inschrijflijst</Card.Header>
+                        <Card.Body>Je moet inloggen om inschrijvingen te zien of aan te vullen.</Card.Body>
                     </Card>
                 </Col>
             </Row>

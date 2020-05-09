@@ -1,8 +1,10 @@
 $kronos-green: #369866;
 $kronos-green-light: #3dab73;
 $kronos-green-dark: #226040;
+//TODO import all scss files inside component directory
 @import 'components/Header/Header';
 @import 'components/Footer/Footer';
+@import 'components/AgendaItems/AgendaItems';
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
@@ -10,9 +12,23 @@ html {
   font-size: 14px;
 }
 
+body{
+  background-color: #f5f5f5;
+}
+
+.main {
+  padding-bottom: 120px;
+}
+
 h1 {
   margin-top: 30px;
   color: $kronos-green;
+}
+
+h1, h2, h3, h4, h5 {
+  small {
+    color: #777777;
+  }
 }
 
 h2 {
@@ -56,3 +72,4 @@ a {
     }
   }
 }
+

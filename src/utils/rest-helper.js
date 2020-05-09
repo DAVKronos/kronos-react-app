@@ -66,7 +66,8 @@ class PhotoAlbums extends ObjectCollection {
 }
 
 const PhotoAlbumsCollection = new PhotoAlbums('photoalbums');
-const AgendaItemTypesCollection = new ObjectCollection('agendaitemtypes')
+const AgendaItemTypesCollection = new ObjectCollection('agendaitemtypes');
+const CommissionCollection = new ObjectCollection('commissions')
 
 export {
     API_HOST,
@@ -75,5 +76,6 @@ export {
     PagesCollection,
     PhotoAlbumsCollection,
     AgendaItemTypesCollection,
+    CommissionCollection,
     getAPIHostUrl
 }
