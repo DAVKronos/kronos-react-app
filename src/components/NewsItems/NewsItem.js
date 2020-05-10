@@ -1,45 +1,29 @@
 import React from "react";
-import {Row, Col, Spinner} from 'react-bootstrap';
+import {Col, Row} from 'react-bootstrap';
 import {getAPIHostUrl, NewsItemsCollection} from "../../utils/rest-helper";
 import format from '../../utils/date-format';
+import withData from "../../utils/withData";
 
 
-class NewsItem extends React.Component {
-    state = {
-        item: null,
-        loading: true
+function NewsItem(props) {
+    let item = props.data;
+    if (!item) {
+        return null;
     }
-
-    async componentDidMount() {
-        let {id} = this.props.match.params;
-        let item = await NewsItemsCollection.get(id);
-        this.setState({item, loading: false});
-    }
-
-    render() {
-        if (this.state.loading || !this.state.item) {
-            return <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>;
-        }
-
-        let item = this.state.item;
-        let date = new Date(item.created_at);
-        return <React.Fragment>
-            <Row>
-                <Col md={{span: 8, offset: 2}}>
-                    <h1>{item.title}</h1>
-                    <p>{format(date, 'PPP p')} | {item.user.name}</p>
-                </Col>
-            </Row>
-            <Row>
-                <Col md={{span: 8, offset: 2}}>
-                    <img src={getAPIHostUrl(item.articlephoto_url_carrousel)} alt={item.title}/>
-                    <p>{item.news}</p>
-                </Col>
-            </Row>
-        </React.Fragment>
-    }
+    return  <React.Fragment>
+        <Row>
+            <Col md={{span: 8, offset: 2}}>
+                <h1>{item.title}</h1>
+                <p>{format(item.created_at, 'PPP p')} | {item.user.name}</p>
+            </Col>
+        </Row>
+        <Row>
+            <Col md={{span: 8, offset: 2}}>
+                <img src={getAPIHostUrl(item.articlephoto_url_carrousel)} alt={item.title}/>
+                <p>{item.news}</p>
+            </Col>
+        </Row>
+    </React.Fragment>
 }
 
-export default NewsItem
+export default withData(NewsItem, NewsItemsCollection, (DS, props) => DS.get(props.match.params.id));

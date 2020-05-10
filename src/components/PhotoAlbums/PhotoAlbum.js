@@ -3,20 +3,14 @@ import {Link} from 'react-router-dom';
 import {Row, Col, Card, Pagination, Spinner} from 'react-bootstrap';
 import {getAPIHostUrl, PhotoAlbumsCollection} from "../../utils/rest-helper";
 import format from '../../utils/date-format';
+import withData from "../../utils/withData";
 
 // TODO convert to real data
 class PhotoAlbum extends React.Component {
     state = {
-        photoAlbum: null,
-        loading: true,
         page: 1
     }
 
-    async componentDidMount() {
-        let {id} = this.props.match.params;
-        let photoAlbum = await PhotoAlbumsCollection.get(id)
-        this.setState({photoAlbum: photoAlbum, loading: false})
-    }
 
     changePage(page) {
         // page = page < 1 ? 1 : page;
@@ -26,12 +20,11 @@ class PhotoAlbum extends React.Component {
     }
 
     render() {
-        if (this.state.loading || !this.state.photoAlbum) {
-            return <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>;
+        let photoAlbum = this.props.data;
+        if (!photoAlbum){
+            return null;
         }
-        let {photoAlbum, page} = this.state;
+        let  {page} = this.state;
         if (!photoAlbum.photos || photoAlbum.photos.length === 0){
             return <h3>Geen foto's</h3>
         }
@@ -53,11 +46,10 @@ class PhotoAlbum extends React.Component {
 
         let photosPage = photos.slice((page-1)*photosPerPage, page * photosPerPage);
 
-        let date = new Date(photoAlbum.created_at);
         return <React.Fragment>
             <Row><Col>
                 <h1>{photoAlbum.name}</h1>
-                <p>aangemaakt: {format(date, 'PPP p')}</p>
+                <p>aangemaakt: {format(photoAlbum.created_at, 'PPP p')}</p>
             </Col></Row>
             <Row>
                 {photosPage && photosPage.map(photo => {
@@ -83,4 +75,4 @@ class PhotoAlbum extends React.Component {
     }
 }
 
-export default PhotoAlbum;
+export default withData(PhotoAlbum, PhotoAlbumsCollection, (DS, props) => DS.get(props.match.params.id));

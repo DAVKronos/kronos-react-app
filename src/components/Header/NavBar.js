@@ -3,25 +3,16 @@ import {Navbar, Nav, NavDropdown} from "react-bootstrap";
 import {NavLink} from 'react-router-dom';
 import {PagesCollection} from "../../utils/rest-helper";
 import LoginMenu from "./LoginMenu";
+import withData from "../../utils/withData";
 
 class NavBar extends React.Component {
-    state = {
-        pages: []
-    }
-
-    async componentDidMount() {
-        let pages = await PagesCollection.getAll();
-        this.setState({pages})
-    }
-
     getPagesForMenu(title) {
-        return this.state.pages.filter((page) => {
+        return this.props.data.filter((page) => {
             return page.menu === title;
         })
     }
 
     getPageLinksForMenu(title) {
-        // TODO Fix path to pagetag instead of id
         return this.getPagesForMenu(title).map(page => {
             return <NavDropdown.Item key={page.pagetag} as={NavLink} to={`/${page.pagetag}`}>{page.pagetag}</NavDropdown.Item>
         })
@@ -60,4 +51,4 @@ class NavBar extends React.Component {
     }
 }
 
-export default NavBar
+export default withData(NavBar, PagesCollection, (DS, props) => DS.getAll())

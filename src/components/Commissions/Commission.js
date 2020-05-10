@@ -1,35 +1,11 @@
 import React from 'react';
-import {Spinner, Table} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 import {CommissionCollection} from "../../utils/rest-helper";
+import withData from "../../utils/withData";
 
-export default class Commission  extends React.Component {
-    state={
-        loading: true,
-        commission: null,
-    }
-
-    async componentDidMount() {
-        let {id} = this.props.match.params;
-        let commission = await CommissionCollection.get(id, {},true);
-        this.setState({
-            commission,
-            loading: false
-        });
-    }
-
-    renderTable() {
-
-    }
-
-
+ class Commission  extends React.Component {
     render() {
-        const {commission, loading} = this.state;
-        if (loading ) {
-            return <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>;
-        }
-
+        const commission = this.props.data;
         if (!commission) {
             return <h1>Commission not found</h1>
         }
@@ -59,3 +35,5 @@ export default class Commission  extends React.Component {
         </React.Fragment>;
     }
 }
+
+export default withData(Commission, CommissionCollection, (DS, props) => DS.get(props.match.params.id, {}, true))

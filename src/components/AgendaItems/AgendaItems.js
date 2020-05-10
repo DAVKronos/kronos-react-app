@@ -3,61 +3,66 @@ import {Link} from "react-router-dom";
 import {Row, Col, Nav, Card, Spinner, Form, Button, FormControl} from 'react-bootstrap';
 import {AgendaItemsCollection, AgendaItemTypesCollection} from "../../utils/rest-helper";
 import format from '../../utils/date-format';
+import withData from "../../utils/withData";
 
+
+function AgendaItemsFilter({filter, data, onChangeFilter}){
+    return <Nav variant="pills">
+        <Nav.Item><Nav.Link active={filter == null}
+                            onClick={() => onChangeFilter(null)}>All</Nav.Link></Nav.Item>
+        {data && data.map(agendaItemType => {
+            return <Nav.Item>
+                <Nav.Link
+                    active={filter === agendaItemType.id}
+                    onClick={() => onChangeFilter(agendaItemType.id)}>
+                    {agendaItemType.name}
+                </Nav.Link>
+            </Nav.Item>;
+        })}
+    </Nav>
+}
+
+const AgendaItemsFilterWithData = withData(AgendaItemsFilter, AgendaItemTypesCollection, DS => DS.getAll())
 
 class AgendaItems extends React.Component {
     state = {
-        agendaItems: [],
-        loading: true,
+        agendaItems: AgendaItemsCollection.getAll(),
         date: new Date(),
-        agendaItemTypes: [],
         filter: null,
         searchMonth: null,
         searchYear: null
     }
 
-    async componentDidMount() {
-        let agendaItems = await AgendaItemsCollection.getAll();
-        this.setState({
-            agendaItems,
-            loading: false
-        });
-        let agendaItemTypes = await AgendaItemTypesCollection.getAll();
-        this.setState({
-            agendaItemTypes
-        })
+    componentDidMount() {
+        AgendaItemsCollection.addChangeListener(this.handleChange);
     }
 
-    loadAgendaItems(date) {
+    componentWillUnmount() {
+        AgendaItemsCollection.removeChangeListener(this.handleChange);
+    }
+
+    handleChange = (date) => {
         let params = {};
+
         if (date) {
             params = {'date[year]': date.getFullYear(), 'date[month]': date.getMonth()+1}
         }
-        AgendaItemsCollection.getAll(params).then(agendaItems => {
-            this.setState({
-                agendaItems,
-                loading: false
-            });
-        });
-    }
-
-    getAgendaItemTypeName(agendaItemTypeId) {
-        // TODO refactor to use AgendaItemTypeCollection instead of this data.
-        if (this.state.agendaItemTypes) {
-            let agendaItemType = this.state.agendaItemTypes.find(i => i.id === agendaItemTypeId);
-            return agendaItemType ? agendaItemType.name : null
-        }
-        return null;
+        this.setState({
+            agendaItems: AgendaItemsCollection.getAll(params).filter(agendaItem => {
+                let agendaItemDate = new Date(agendaItem.date);
+                return !date ||  agendaItemDate.getFullYear() === date.getFullYear() && agendaItemDate.getMonth() === date.getMonth();
+            })
+        })
     }
 
     changeDate(date) {
         if (this.state.date !== date) {
             this.setState({date, loading:true});
-            this.loadAgendaItems(date);
+            this.handleChange(date);
         }
     }
 
-    changeFilter(filter) {
+    onChangeFilter = (filter) => {
         if (this.state.filter !== filter) {
             this.setState({filter});
         }
@@ -90,7 +95,7 @@ class AgendaItems extends React.Component {
             searchMonth: null,
             loading: true
         });
-        this.loadAgendaItems(newDate);
+        this.handleChange(newDate);
 
     }
 
@@ -125,40 +130,22 @@ class AgendaItems extends React.Component {
         </Nav>
     }
 
-    renderFilter() {
-        let {filter, agendaItemTypes} = this.state;
-        return <Nav variant="pills">
-            <Nav.Item><Nav.Link active={filter == null}
-                                onClick={() => this.changeFilter(null)}>All</Nav.Link></Nav.Item>
-            {agendaItemTypes && agendaItemTypes.map(agendaItemType => {
-                return <Nav.Item>
-                    <Nav.Link
-                        active={filter === agendaItemType.id}
-                        onClick={() => this.changeFilter(agendaItemType.id)}>
-                        {agendaItemType.name}
-                    </Nav.Link>
-                </Nav.Item>;
-            })}
-        </Nav>
-    }
 
     renderItems() {
-        let { agendaItems, filter, loading} = this.state;
-        if (loading) {
-            return <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>;
-        }
+        let { agendaItems, filter} = this.state;
         if (filter) {
             agendaItems = agendaItems.filter(agendaItem => agendaItem.agendaitemtype_id === filter)
         }
+
+
         return agendaItems && agendaItems.map(item => {
+            let agendaItemType = AgendaItemTypesCollection.get(item.agendaitemtype_id);
             let itemDate = new Date(item.date);
             return <Link to={`/agendaitems/${item.id}`} className='agenda-item'><Card body>
                 <Row>
                     <Col sm={1}><h4>{format(itemDate, 'd')} <small>{format(itemDate, 'ccc')}</small></h4></Col>
                     <Col sm={1}><h4>{format(itemDate, 'p')}</h4></Col>
-                    <Col sm={9}><h4>{item.name} <small>{this.getAgendaItemTypeName(item.agendaitemtype_id)}</small></h4></Col>
+                    <Col sm={9}><h4>{item.name} <small>{agendaItemType && agendaItemType.name}</small></h4></Col>
                     <Col sm={1}><h4>{item.subscriptions.length}</h4></Col>
                 </Row>
             </Card></Link>
@@ -166,6 +153,7 @@ class AgendaItems extends React.Component {
     }
 
     render() {
+        const {filter} = this.state;
         return (<React.Fragment>
             <Row>
                 <Col md={12}>
@@ -179,7 +167,7 @@ class AgendaItems extends React.Component {
             </Row>
             <Row style={{marginTop: 20}}>
                 <Col md={12}>
-                    {this.renderFilter()}
+                    <AgendaItemsFilterWithData filter={filter} onChangeFilter={this.onChangeFilter}/>
                 </Col>
             </Row>
             <Row style={{marginTop: 20}}>

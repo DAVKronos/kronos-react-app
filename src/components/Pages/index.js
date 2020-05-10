@@ -6,7 +6,10 @@ import Page from "./Page";
 const PhotoAlbumsRouter = () => {
     return <Switch>
         <Route path="/pages/:id" component={Page} />
-        <Route path="/:pagetag" component={Page} />
+        <Route path="/:pagetag"  render={(routeProps) => {
+            // Key is to rerender when switching to a new page
+            return <Page key={routeProps.match.params.pagetag} {...routeProps}/>;
+        }} />
     </Switch>
 };
 

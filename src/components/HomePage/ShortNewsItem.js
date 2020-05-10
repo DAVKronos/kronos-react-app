@@ -5,7 +5,6 @@ import {getAPIHostUrl} from "../../utils/rest-helper";
 import format from '../../utils/date-format.js'
 
 const ShortNewsItem = ({item}) => {
-    let date = new Date(item.created_at);
 
     return <Row>
         <Col md={3} style={{display: 'flex'}}>
@@ -16,7 +15,7 @@ const ShortNewsItem = ({item}) => {
         <Col md={9}>
             <header>
                 <Link to={`/newsitems/${item.id}`}><h2>{item.title}</h2></Link>
-                <p>{format(date, 'PPP p')} | {item.user.name}</p>
+                <p>{format(item.created_at, 'PPP p')} | {item.user.name}</p>
             </header>
             <p>{item.news.split('\n')[0]}</p>
             <Link to={`/newsitems/${item.id}`}>Read more</Link>

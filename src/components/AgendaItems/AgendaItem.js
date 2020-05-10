@@ -1,41 +1,17 @@
 import React from 'react';
-import {Col, Row, Card, Spinner} from 'react-bootstrap';
+import {Col, Row, Card} from 'react-bootstrap';
 import {AgendaItemsCollection, AgendaItemTypesCollection} from "../../utils/rest-helper";
 
 import format from '../../utils/date-format';
+import withData from "../../utils/withData";
 
 class AgendaItem extends React.Component {
-    state = {
-        agendaItem: null,
-        loading: true,
-        agendaItemType: null,
-        commission: null
-    }
-
-    async componentDidMount() {
-        let {id} = this.props.match.params;
-        let agendaItem = await AgendaItemsCollection.get(id)
-        this.setState({
-            agendaItem,
-            loading: false
-        })
-        if (agendaItem && agendaItem.agendaitemtype_id) {
-            let agendaItemType = await AgendaItemTypesCollection.get(agendaItem.agendaitemtype_id);
-            this.setState({agendaItemType})
-        }
-        if (agendaItem && agendaItem.commission_id) {
-            let commission = await AgendaItemTypesCollection.get(agendaItem.commission_id);
-            this.setState({commission})
-        }
-    }
-
     render() {
-        if (this.state.loading || !this.state.agendaItem) {
-            return <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-            </Spinner>;
+        let agendaItem = this.props.data;
+        if (!agendaItem) {
+            return null;
         }
-        let {agendaItem, agendaItemType} = this.state;
+        let agendaItemType =  AgendaItemTypesCollection.get(agendaItem.agendaitemtype_id);
         let agendaItemTypeName = agendaItemType && <small>{agendaItemType.name}</small>;
 
         let date = new Date(agendaItem.date);
@@ -91,4 +67,4 @@ class AgendaItem extends React.Component {
     }
 }
 
-export default AgendaItem;
+export default withData(AgendaItem, AgendaItemsCollection, (DS, props) => DS.get(props.match.params.id));
