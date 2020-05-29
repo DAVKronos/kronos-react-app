@@ -26,4 +26,4 @@ function NewsItem(props) {
     </React.Fragment>
 }
 
-export default withData(NewsItem, NewsItemsCollection, (DS, props) => DS.get(props.match.params.id));
+export default withData(NewsItem, (props) => NewsItemsCollection.get(props.match.params.id));

@@ -9,7 +9,7 @@ function NewsItems(props) {
     const items = props.data || [];
     return <div>
         <NewsItemCarousel items={items.slice(0, 2)}/>
-        {items.map(item => {
+        {items.sort(sort_newsItems).map(item => {
             return <ShortNewsItem item={item}/>
         })}
     </div>
@@ -20,4 +20,4 @@ function sort_newsItems(a, b) {
 }
 
 
-export default withData(NewsItems, NewsItemsCollection, (DS) => DS.getAll({}, sort_newsItems));
+export default withData(NewsItems, () => NewsItemsCollection.getAll() );

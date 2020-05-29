@@ -29,4 +29,4 @@ function Commissions(props) {
     </React.Fragment>;
 }
 
-export default withData(Commissions, CommissionCollection, DS => DS.getAll())
+export default withData(Commissions, () => CommissionCollection.getAll())

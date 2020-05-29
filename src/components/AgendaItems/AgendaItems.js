@@ -1,9 +1,10 @@
 import React from 'react'
 import {Link} from "react-router-dom";
-import {Row, Col, Nav, Card, Spinner, Form, Button, FormControl} from 'react-bootstrap';
+import {Row, Col, Nav, Card, Form, Button, FormControl} from 'react-bootstrap';
 import {AgendaItemsCollection, AgendaItemTypesCollection} from "../../utils/rest-helper";
 import format from '../../utils/date-format';
 import withData from "../../utils/withData";
+import {AgendaItemTypeName} from "./AgendaItemType";
 
 
 function AgendaItemsFilter({filter, data, onChangeFilter}){
@@ -22,11 +23,14 @@ function AgendaItemsFilter({filter, data, onChangeFilter}){
     </Nav>
 }
 
-const AgendaItemsFilterWithData = withData(AgendaItemsFilter, AgendaItemTypesCollection, DS => DS.getAll())
+const AgendaItemsFilterWithData = withData(AgendaItemsFilter, () =>  AgendaItemTypesCollection.getAll())
+
+
+
 
 class AgendaItems extends React.Component {
     state = {
-        agendaItems: AgendaItemsCollection.getAll(),
+        agendaItems:[],
         date: new Date(),
         filter: null,
         searchMonth: null,
@@ -34,11 +38,9 @@ class AgendaItems extends React.Component {
     }
 
     componentDidMount() {
-        AgendaItemsCollection.addChangeListener(this.handleChange);
-    }
-
-    componentWillUnmount() {
-        AgendaItemsCollection.removeChangeListener(this.handleChange);
+        AgendaItemsCollection.getAll().then(agendaItems => {
+            this.setState({agendaItems})
+        })
     }
 
     handleChange = (date) => {
@@ -47,12 +49,17 @@ class AgendaItems extends React.Component {
         if (date) {
             params = {'date[year]': date.getFullYear(), 'date[month]': date.getMonth()+1}
         }
-        this.setState({
-            agendaItems: AgendaItemsCollection.getAll(params).filter(agendaItem => {
+
+        AgendaItemsCollection.getAll(params).then(agendaItems => {
+            agendaItems = agendaItems.filter(agendaItem => {
                 let agendaItemDate = new Date(agendaItem.date);
-                return !date ||  agendaItemDate.getFullYear() === date.getFullYear() && agendaItemDate.getMonth() === date.getMonth();
+                return !date || agendaItemDate.getFullYear() === date.getFullYear() && agendaItemDate.getMonth() === date.getMonth();
+            });
+
+            this.setState({
+                agendaItems
             })
-        })
+        });
     }
 
     changeDate(date) {
@@ -139,14 +146,13 @@ class AgendaItems extends React.Component {
 
 
         return agendaItems && agendaItems.map(item => {
-            let agendaItemType = AgendaItemTypesCollection.get(item.agendaitemtype_id);
             let itemDate = new Date(item.date);
-            return <Link to={`/agendaitems/${item.id}`} className='agenda-item'><Card body>
+            return <Link key={item.id} to={`/agendaitems/${item.id}`} className='agenda-item'><Card body>
                 <Row>
                     <Col sm={1}><h4>{format(itemDate, 'd')} <small>{format(itemDate, 'ccc')}</small></h4></Col>
                     <Col sm={1}><h4>{format(itemDate, 'p')}</h4></Col>
-                    <Col sm={9}><h4>{item.name} <small>{agendaItemType && agendaItemType.name}</small></h4></Col>
-                    <Col sm={1}><h4>{item.subscriptions.length}</h4></Col>
+                    <Col sm={9}><h4>{item.name} <small><AgendaItemTypeName id={item.agendaitemtype_id}/></small></h4></Col>
+                    {/*<Col sm={1}><h4>{item.subscriptions.length}</h4></Col>*/}
                 </Row>
             </Card></Link>
         });

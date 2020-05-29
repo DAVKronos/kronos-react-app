@@ -14,73 +14,39 @@ function transformObject(obj) {
     }
 }
 
+function restCall(url, params = {}) {
+    return axios.get(`${API_HOST}/${url}`, {...config, params}).catch(() => {
+        return {data: null};
+    });
+}
+
 class ObjectCollection {
     constructor(url) {
         this.objects = {};
         this.url = url;
-        this.listeners = [];
     }
 
-    getAll(params, sort_func) {
-        axios.get(`${API_HOST}/${this.url}/`, {...config, params}).then(response => {
-            let changed = false;
-            response.data.forEach(object => {
-                object = transformObject(object);
-                if (!this.objects[object.id] || this.objects[object.id].updated_at < object.updated_at) {
-                    this.objects[object.id] = object;
-                    changed = true;
-                }
+    getAll(params) {
+        return restCall(this.url, params).then(response => {
+            return response.data.map(object => {
+                return transformObject(object);
             });
-            if (changed) {
-                this.notifyChangeListeners();
-            }
-
-        }).catch(() => {
-            return {data: []};
         });
-
-        let objects = Object.values(this.objects)
-        if (sort_func) {
-            objects = objects.sort(sort_func);
-        } else {
-            objects = objects.sort((a, b) => a.id - b.id);
-        }
-        return objects;
     }
 
-    notifyChangeListeners() {
-        this.listeners.forEach(handleChange => {
-            handleChange();
-        })
-    }
-
-    addChangeListener(listener) {
-        this.listeners.push(listener);
-    }
-
-    removeChangeListener(listener) {
-        this.listeners = this.listeners.filter(l => l !== listener);
-    }
 
     get(id, params) {
-        axios.get(`${API_HOST}/${this.url}/${id}`, {...config, params}).then(response => {
-            let changed = false;
-            if (response.data) {
-                let object = transformObject(response.data);
+        if (this.objects[id]) {
+            return Promise.resolve(this.objects[id]);
+        }
 
-                if (!this.objects[object.id] || this.objects[object.id].updated_at < object.updated_at || JSON.stringify(this.objects[object.id]) !== JSON.stringify(object)) {
-                    this.objects[object.id] = object;
-                    changed = true;
-                }
+        return restCall(`${this.url}/${id}`, params).then(response => {
+            let object =  response.data ? transformObject(response.data) : null;
+            if (object) {
+                this.objects[object.id] = object;
             }
-
-            if (changed) {
-                this.notifyChangeListeners();
-            }
-        }).catch(e => {
-            return {data: null};
+            return object;
         });
-        return this.objects[id];
     }
 }
 
@@ -89,35 +55,28 @@ function getAPIHostUrl(url) {
     return 'http://localhost:3000' + url;
 }
 
-const NewsItemsCollection = new ObjectCollection('newsitems');
-const AgendaItemsCollection = new ObjectCollection('agendaitems');
-const PagesCollection = new ObjectCollection('pages');
+class AgendaItems extends ObjectCollection {
 
-class PhotoAlbums extends ObjectCollection {
-    get(id, params) {
-        axios.get(`${API_HOST}/${this.url}/${id}`, {...config, params}).then(response => {
-            let photoAlbum = response.data && response.data.photoalbum && transformObject(response.data.photoalbum);
-            let photos = response.data && response.data.photos;
-            let changed = false;
-            if (photoAlbum && photos && (!this.objects[id] || !this.objects[id].photos)) {
-                this.objects[id] = transformObject(response.data.photoalbum);
-                this.objects[id].photos = photos;
-                changed = true;
-            }
-            if (changed) {
-                this.notifyChangeListeners();
-            }
-        }).catch(e => {
-            return {data: null};
+    getEvents(id) {
+        return restCall(`${this.url}/${id}/events`).then(response => {
+            return Promise.all(response.data.map(async event  => {
+                let event_type = await EventTypesCollection.get(event.eventtype_id)
+                return {...event, ...event_type};
+
+            }));
         });
-
-        return this.objects[id];
     }
 }
 
-const PhotoAlbumsCollection = new PhotoAlbums('photoalbums');
+
+const PhotoAlbumsCollection = new ObjectCollection('photoalbums');
+const NewsItemsCollection = new ObjectCollection('newsitems');
+const AgendaItemsCollection = new AgendaItems('agendaitems');
+const PagesCollection = new ObjectCollection('pages');
 const AgendaItemTypesCollection = new ObjectCollection('agendaitemtypes');
-const CommissionCollection = new ObjectCollection('commissions')
+const CommissionCollection = new ObjectCollection('commissions');
+const EventTypesCollection = new ObjectCollection('eventtypes');
+const ResultsCollection = new ObjectCollection('results')
 
 export {
     API_HOST,
@@ -127,5 +86,8 @@ export {
     PhotoAlbumsCollection,
     AgendaItemTypesCollection,
     CommissionCollection,
-    getAPIHostUrl
+    EventTypesCollection,
+    ResultsCollection,
+    getAPIHostUrl,
+    transformObject
 }

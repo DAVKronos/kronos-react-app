@@ -3,15 +3,17 @@ import AgendaItem from "./AgendaItem";
 import {Card, ListGroup} from 'react-bootstrap';
 import {AgendaItemsCollection} from "../../utils/rest-helper";
 import withData from "../../utils/withData";
+import Spinner from "react-bootstrap/Spinner";
 
-function AgendaItemsSideBar(props) {
-
-    let items = props.data || [];
+function AgendaItemsSideBar({loading, data: agendaItems = []}) {
+    if (loading) {
+        return <Spinner />;
+    }
 
     return <Card className="side-panel">
         <Card.Header>Agenda</Card.Header>
         <ListGroup variant='flush'>
-            {items.map(item => (<ListGroup.Item><AgendaItem item={item}/></ListGroup.Item>))}
+            {agendaItems.sort(sortAgendaItems).map(item => (<ListGroup.Item key={item.id}><AgendaItem item={item}/></ListGroup.Item>))}
         </ListGroup>
     </Card>
 }
@@ -19,8 +21,8 @@ function AgendaItemsSideBar(props) {
 
 
 function sortAgendaItems(a, b) {
-    return new Date(b.date) - new Date(a.date)
+    return new Date(a.date) - new Date(b.date);
 }
 
 
-export default withData(AgendaItemsSideBar, AgendaItemsCollection, (DS) => DS.getAll({}, sortAgendaItems));
+export default withData(AgendaItemsSideBar, () => AgendaItemsCollection.getAll());

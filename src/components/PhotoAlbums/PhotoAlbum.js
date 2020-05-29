@@ -1,11 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Row, Col, Card, Pagination, Spinner} from 'react-bootstrap';
-import {getAPIHostUrl, PhotoAlbumsCollection} from "../../utils/rest-helper";
+import {getAPIHostUrl, PhotoAlbumsCollection, transformObject} from "../../utils/rest-helper";
 import format from '../../utils/date-format';
 import withData from "../../utils/withData";
 
-// TODO convert to real data
 class PhotoAlbum extends React.Component {
     state = {
         page: 1
@@ -31,6 +30,7 @@ class PhotoAlbum extends React.Component {
 
 
         let photos = photoAlbum.photos || [];
+        photoAlbum = transformObject(photoAlbum.photoalbum);
         let {id} = this.props.match.params;
         let pageNumbers = [];
         const photosPerPage = 12;
@@ -75,4 +75,4 @@ class PhotoAlbum extends React.Component {
     }
 }
 
-export default withData(PhotoAlbum, PhotoAlbumsCollection, (DS, props) => DS.get(props.match.params.id));
+export default withData(PhotoAlbum, (props) => PhotoAlbumsCollection.get(props.match.params.id));

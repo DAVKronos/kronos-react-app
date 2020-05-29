@@ -12,6 +12,7 @@ function Photo(props) {
     }
 
     let photos = photoAlbum.photos || [];
+    photoAlbum = photoAlbum.photoalbum;
     let {photo_id, album_id} = props.match.params;
     photo_id = parseInt(photo_id);
 
@@ -52,4 +53,4 @@ function Photo(props) {
     </React.Fragment>;
 }
 
-export default withData(Photo, PhotoAlbumsCollection, (DS, props) => DS.get(props.match.params.album_id));
+export default withData(Photo, (props) => PhotoAlbumsCollection.get(props.match.params.album_id));

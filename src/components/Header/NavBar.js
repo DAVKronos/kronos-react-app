@@ -7,7 +7,8 @@ import withData from "../../utils/withData";
 
 class NavBar extends React.Component {
     getPagesForMenu(title) {
-        return this.props.data.filter((page) => {
+        let pages = this.props.data || [];
+        return pages.filter((page) => {
             return page.menu === title;
         })
     }
@@ -51,4 +52,4 @@ class NavBar extends React.Component {
     }
 }
 
-export default withData(NavBar, PagesCollection, (DS, props) => DS.getAll())
+export default withData(NavBar, () => PagesCollection.getAll())

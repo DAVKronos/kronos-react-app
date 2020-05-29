@@ -1,32 +1,23 @@
 import React from 'react';
 
-export default function withData(WrappedComponent, DataSource, selectData) {
+export default function withData(WrappedComponent, dataFunction) {
     return class extends React.Component {
         constructor(props) {
             super(props);
             this.state = {
-                data: selectData(DataSource, props)
+                data: null,
+                loading: true
             };
         }
 
         componentDidMount() {
-            DataSource.addChangeListener(this.handleChange);
-        }
-
-        componentWillUnmount() {
-            DataSource.removeChangeListener(this.handleChange);
-        }
-
-        handleChange = () => {
-            this.setState({
-                data: selectData(DataSource, this.props)
-            });
+            dataFunction(this.props).then(data => {
+                this.setState({data, loading: false})
+            })
         }
 
         render() {
-            // ... and renders the wrapped component with the fresh data!
-            // Notice that we pass through any additional props
-            return <WrappedComponent data={this.state.data} {...this.props} />;
+            return <WrappedComponent {...this.state} {...this.props} />;
         }
     };
 }

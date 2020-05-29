@@ -6,7 +6,7 @@ import withData from "../../utils/withData";
 
 
 function PhotoAlbums(props) {
-    let photoAlbums = props.data;
+    let photoAlbums = props.data || [];
     return <React.Fragment>
         <Row>
             <Col><h1>Fotoalbum</h1></Col>
@@ -25,15 +25,12 @@ function sortPhotoAlbums(a,b) {
     return b.created_at - a.created_at;
 }
 
-function dataFunction(DataSource) {
-    let photoAlbums =  DataSource.getAll({}, sortPhotoAlbums);
-    if (photoAlbums && photoAlbums.length > 0){
-        photoAlbums =  photoAlbums.map((item, index) => {
-            return DataSource.get(item.id)
-        })
-        return photoAlbums;
-    }
-    return photoAlbums;
+function dataFunction() {
+    return PhotoAlbumsCollection.getAll({}).then(photoAlbums => {
+        return  Promise.all(photoAlbums.sort(sortPhotoAlbums).map((item, index) => {
+            return PhotoAlbumsCollection.get(item.id)
+        }));
+    });
 }
 
-export default withData(PhotoAlbums, PhotoAlbumsCollection, dataFunction);
+export default withData(PhotoAlbums, () =>  dataFunction());

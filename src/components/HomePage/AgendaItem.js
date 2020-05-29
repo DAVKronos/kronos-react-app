@@ -12,7 +12,6 @@ const AgendaItem = ({item}) => {
             <small>{format(date, 'MMM')}</small>
         </h5></Col>
         <Col xs={8}><h5>{item.name}</h5></Col>
-        <Col xs={2}><h5>{item.subscriptions.length}</h5></Col>
     </Row>
 };
 
