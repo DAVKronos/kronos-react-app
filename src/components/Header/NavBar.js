@@ -19,6 +19,15 @@ class NavBar extends React.Component {
         })
     }
 
+    getHighlightPages() {
+        let pages = this.props.data || [];
+        return pages.filter((page) => {
+            return page.highlight;
+        }).map(page => {
+            return <Nav.Link className='highlight' key={page.pagetag} as={NavLink} to={`/${page.pagetag}`}>{page.pagetag}</Nav.Link>;
+        })
+    }
+
     render() {
         // TODO Add highlight pages
         return <Navbar id="navbar-kronos" expand="lg">
@@ -40,6 +49,7 @@ class NavBar extends React.Component {
                     <Nav.Link as={NavLink} to="/uitslagen">Uitslagen</Nav.Link>
                     <Nav.Link as={NavLink} to="/photoalbums">Foto's</Nav.Link>
                     <Nav.Link as={NavLink} to="/contact">Contact</Nav.Link>
+                    {this.getHighlightPages()}
                 </Nav>
                 <Nav className="justify-content-end">
                     <NavDropdown title="Login" id="basic-nav-dropdown" alignRight>
