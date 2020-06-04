@@ -2,9 +2,8 @@ import React from "react";
 
 //TODO Add sponsors either directly of from Rails url.
 const Sponsors = () => {
-    return <div>
+    return <div className="row sponsor-white">
         <h2>Sponsors</h2>
-
     </div>;
 };
 
