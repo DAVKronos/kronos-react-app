@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Col, Row} from 'react-bootstrap';
+import {Card, Col, ListGroup, Row} from 'react-bootstrap';
 import {AgendaItemsCollection} from "../../utils/rest-helper";
 import {AgendaItemTypeName} from './AgendaItemType';
 
@@ -17,10 +17,13 @@ const AgendaItemEvents = ({data: events, loading}) => {
     if (!events || events.length === 0){
         return "Geen Programma";
     }
-    return events.map(event => {
-        let date = new Date(event.date);
-        return <p key={event.id}>{format(date, 'p')} {event.name}</p>;
-    })
+    return <ListGroup variant="flush">
+        {events.map(event => {
+            let date = new Date(event.date);
+            return <ListGroup.Item key={event.id}>{format(date, 'p')} {event.name}</ListGroup.Item>;
+        })}
+    </ListGroup>;
+
 }
 const AgendaItemEventsWithData = withData(AgendaItemEvents, (props) => AgendaItemsCollection.getEvents(props.agendaItemId))
 
@@ -61,7 +64,7 @@ function AgendaItem(props) {
             <Col md={4}>
                 <Card>
                     <Card.Header>Programma</Card.Header>
-                    <Card.Body><AgendaItemEventsWithData agendaItemId={agendaItem.id}/></Card.Body>
+                    <AgendaItemEventsWithData agendaItemId={agendaItem.id}/>
                 </Card>
                 <Card style={{marginTop: 20}}>
                     <Card.Header>Inschrijflijst</Card.Header>

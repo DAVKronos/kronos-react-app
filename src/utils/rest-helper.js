@@ -76,7 +76,8 @@ const PagesCollection = new ObjectCollection('pages');
 const AgendaItemTypesCollection = new ObjectCollection('agendaitemtypes');
 const CommissionCollection = new ObjectCollection('commissions');
 const EventTypesCollection = new ObjectCollection('eventtypes');
-const ResultsCollection = new ObjectCollection('results')
+const ResultsCollection = new ObjectCollection('results');
+const EventsCollection = new ObjectCollection('events')
 
 export {
     API_HOST,
@@ -88,6 +89,7 @@ export {
     CommissionCollection,
     EventTypesCollection,
     ResultsCollection,
+    EventsCollection,
     getAPIHostUrl,
     transformObject
 }

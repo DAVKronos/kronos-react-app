@@ -10,7 +10,7 @@ function NewsItems(props) {
     return <div>
         <NewsItemCarousel items={items.slice(0, 2)}/>
         {items.sort(sort_newsItems).map(item => {
-            return <ShortNewsItem item={item}/>
+            return <ShortNewsItem key={item.id} item={item}/>
         })}
     </div>
 }
