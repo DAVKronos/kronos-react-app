@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import format from "../../utils/date-format";
 import {AgendaItemTypeName} from "../AgendaItems/AgendaItemType";
 import EventsResults from "../AgendaItems/EventsResults";
+import {BsChevronDown} from 'react-icons/bs';
 
 
 class Results extends React.Component {
@@ -109,7 +110,11 @@ class Results extends React.Component {
                                     <Row>
                                         <Col sm={2}><h4>{format(itemDate, 'd')} <small>{format(itemDate, 'ccc')}</small></h4></Col>
                                         <Col sm={1}><h4>{format(itemDate, 'p')}</h4></Col>
-                                        <Col sm={9}><h4>{item.name} <small><AgendaItemTypeName id={item.agendaitemtype_id}/></small></h4></Col>
+                                        <Col sm={9} style={{display: 'flex', justifyContent: 'space-between'}}>
+                                            <h4>{item.name} <small><AgendaItemTypeName id={item.agendaitemtype_id}/></small></h4>
+                                            <div style={{verticalAlign: 'middle'}}><BsChevronDown /></div>
+
+                                        </Col>
                                     </Row>
                                 </Accordion.Toggle>
                             <Accordion.Collapse eventKey={index}>

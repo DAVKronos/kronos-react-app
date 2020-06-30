@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, Col, ListGroup, Row} from 'react-bootstrap';
 import {AgendaItemsCollection} from "../../utils/rest-helper";
 import {AgendaItemTypeName} from './AgendaItemType';
+import {BsGeoAlt, BsClock, BsList, BsLink} from 'react-icons/bs';
 
 import format from '../../utils/date-format';
 import withData from "../../utils/withData";
@@ -44,19 +45,25 @@ function AgendaItem(props) {
         <Row>
             <Col md={8}>
                 <Row>
-                    <Col xs={1}></Col>
+                    <Col xs={1}><BsClock/></Col>
                     <Col xs={11}>{format(date, 'PPP p')}</Col>
                 </Row>
-                <Row>
-                    <Col xs={1}></Col>
+                {agendaItem.location && <Row>
+                    <Col xs={1}><BsGeoAlt/></Col>
                     <Col xs={11}>{agendaItem.location}</Col>
                 </Row>
-                <Row>
-                    <Col xs={1}></Col>
-                    <Col xs={11}>{agendaItem.commission}</Col>
+                }
+                {agendaItem.url && <Row>
+                    <Col xs={1}><BsLink/></Col>
+                    <Col xs={11}><a href={`http://${agendaItem.url}`}>{agendaItem.url}</a></Col>
                 </Row>
+                }
+                {agendaItem.commission && <Row>
+                    <Col xs={1}><BsGeoAlt/></Col>
+                    <Col xs={11}>{agendaItem.commission}</Col>
+                </Row>}
                 <Row>
-                    <Col xs={1}> </Col>
+                    <Col xs={1}><BsList/></Col>
                     <Col xs={11}>{agendaItem.description}</Col>
                 </Row>
                 <Row><Col>
