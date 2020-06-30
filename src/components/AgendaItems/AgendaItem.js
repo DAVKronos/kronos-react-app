@@ -6,7 +6,7 @@ import {AgendaItemTypeName} from './AgendaItemType';
 import format from '../../utils/date-format';
 import withData from "../../utils/withData";
 import Spinner from "../Spinner";
-import EventResults from "./EventResults";
+import EventsResults from "./EventsResults";
 
 
 const AgendaItemEvents = ({data: events, loading}) => {
@@ -59,7 +59,10 @@ function AgendaItem(props) {
                     <Col xs={1}> </Col>
                     <Col xs={11}>{agendaItem.description}</Col>
                 </Row>
-                <Row><Col><EventResults agendaItemId={agendaItem.id}/></Col></Row>
+                <Row><Col>
+                    <h2>Results</h2>
+                    <EventsResults agendaItemId={agendaItem.id}/>
+                </Col></Row>
             </Col>
             <Col md={4}>
                 <Card>

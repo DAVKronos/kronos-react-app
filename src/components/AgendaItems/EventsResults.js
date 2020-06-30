@@ -14,11 +14,11 @@ const EventResults = ({event}) => {
         </tr>
         </thead>
         <tbody>
-        {event.results && event.results.map(result => {
+        {event.results && event.results.sort((a,b) => a.place - b.place).map(result => {
             return <tr key={result.id}>
                 <td>{result.result} {event.measuringUnit} {result.place && `(${result.place})`}</td>
                 <td>{result.username}</td>
-                <td>{result.calculated} {event.calculatedUnit}</td>
+                <td>{Math.round(result.calculated * 100) / 100} {event.calculatedUnit}</td>
             </tr>
         })}
         </tbody>
@@ -32,8 +32,8 @@ const EventsResults = ({loading, data: events}) => {
     }
 
     return <div>
-        <h2>Results</h2>
-        {events && events.map(event => <EventResults event={event}/>)}
+
+        {events && events.map(event => <EventResults key={event.id} event={event}/>)}
     </div>;
 };
 

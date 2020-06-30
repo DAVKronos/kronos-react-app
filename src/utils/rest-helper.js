@@ -28,6 +28,10 @@ class ObjectCollection {
 
     getAll(params) {
         return restCall(this.url, params).then(response => {
+            if (!response || !response.data) {
+                return [];
+            }
+
             return response.data.map(object => {
                 return transformObject(object);
             });

@@ -5,6 +5,7 @@ import {AgendaItemsCollection, AgendaItemTypesCollection} from "../../utils/rest
 import format from '../../utils/date-format';
 import withData from "../../utils/withData";
 import {AgendaItemTypeName} from "./AgendaItemType";
+import MonthSwitcher from "../Generic/MonthSwitcher";
 
 
 function AgendaItemsFilter({filter, data, onChangeFilter}){
@@ -62,7 +63,7 @@ class AgendaItems extends React.Component {
         });
     }
 
-    changeDate(date) {
+    changeDate = (date) => {
         if (this.state.date !== date) {
             this.setState({date, loading:true});
             this.handleChange(date);
@@ -108,33 +109,13 @@ class AgendaItems extends React.Component {
 
     renderMonthSwitcher() {
         let {date, searchMonth, searchYear} = this.state;
-        let month = date.getMonth();
-        let year = date.getFullYear();
-
-        let searchYearValue = searchYear !== null ? searchYear : year;
-        let searchMonthValue = searchMonth !== null ?  searchMonth : month + 1;
-        let prev = new Date(year, month - 1);
-        let next = new Date(year, month + 1);
-        return <Nav variant="tabs">
-            <Nav.Item>
-                <Nav.Link
-                    onClick={() => this.changeDate(prev)}>{format(prev, 'MMM yyyy')}</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link active>{format(date, 'MMM yyyy')}</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link
-                    onClick={() => this.changeDate(next)}>{format(next, 'MMM yyyy')}</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-            <Form inline>
-                <FormControl style={{width: 50}} type="text" placeholder="M" value={searchMonthValue} onChange={this.onChangeSearchMonth} className="mr-sm-1" />
-                <FormControl style={{width: 100}} type="text" placeholder="Y" value={searchYearValue} onChange={this.onChangeSearchYear} className="mr-sm-1" />
-                <Button variant="outline-success" onClick={this.onClickSearch}>Search</Button>
-            </Form>
-            </Nav.Item>
-        </Nav>
+        return <MonthSwitcher date={date}
+                              searchMonth={searchMonth}
+                              searchYear={searchYear}
+                              onChangeDate={this.changeDate}
+                              onChangeSearchMonth={this.onChangeSearchMonth}
+                              onChangeSearchYear={this.onChangeSearchYear}
+                              onClickSearch={this.onClickSearch} />
     }
 
 
@@ -147,9 +128,9 @@ class AgendaItems extends React.Component {
 
         return agendaItems && agendaItems.map(item => {
             let itemDate = new Date(item.date);
-            return <Link key={item.id} to={`/agendaitems/${item.id}`} className='agenda-item'><Card body>
+            return <Link key={item.id} to={`/agendaitems/${item.id}`} className='agenda-item'><Card body style={{marginBottom: 10}}>
                 <Row>
-                    <Col sm={1}><h4>{format(itemDate, 'd')} <small>{format(itemDate, 'ccc')}</small></h4></Col>
+                    <Col sm={2}><h4>{format(itemDate, 'd')} <small>{format(itemDate, 'ccc')}</small></h4></Col>
                     <Col sm={1}><h4>{format(itemDate, 'p')}</h4></Col>
                     <Col sm={9}><h4>{item.name} <small><AgendaItemTypeName id={item.agendaitemtype_id}/></small></h4></Col>
                     {/*<Col sm={1}><h4>{item.subscriptions.length}</h4></Col>*/}

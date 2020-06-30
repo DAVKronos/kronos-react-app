@@ -46,7 +46,7 @@ class NavBar extends React.Component {
                         {this.getPageLinksForMenu('Wedstrijden')}
                     </NavDropdown>
                     <Nav.Link as={NavLink} to="/agendaitems">Agenda</Nav.Link>
-                    <Nav.Link as={NavLink} to="/uitslagen">Uitslagen</Nav.Link>
+                    <Nav.Link as={NavLink} to="/results">Uitslagen</Nav.Link>
                     <Nav.Link as={NavLink} to="/photoalbums">Foto's</Nav.Link>
                     <Nav.Link as={NavLink} to="/contact">Contact</Nav.Link>
                     {this.getHighlightPages()}

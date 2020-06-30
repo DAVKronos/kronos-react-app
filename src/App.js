@@ -15,6 +15,7 @@ import PhotoAlbumsRouter from './components/PhotoAlbums'
 import PagesRouter from './components/Pages';
 import CommissionsRouter from "./components/Commissions";
 import Contact from "./components/Contact/Contact";
+import ResultsRouter from "./components/Results";
 
 // TODO Add pages with pagetag to the home path
 const App = () => {
@@ -23,7 +24,7 @@ const App = () => {
         <div className='main'>
         <Switch>
            <Route exact path="/">
-                <HomePage />
+                <HomePage key='home' />
            </Route>
             <Route path="/newsitems">
                 <NewsItemsRouter />
@@ -39,6 +40,9 @@ const App = () => {
             </Route>
             <Route path="/commissions">
                 <CommissionsRouter />
+            </Route>
+            <Route path="/results">
+                <ResultsRouter />
             </Route>
             <Route path="/pages">
                 <PagesRouter />
