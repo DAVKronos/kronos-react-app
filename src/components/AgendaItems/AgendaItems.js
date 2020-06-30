@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from "react-router-dom";
-import {Row, Col, Nav, Card, Form, Button, FormControl} from 'react-bootstrap';
+import {Row, Col, Nav, Card} from 'react-bootstrap';
 import {AgendaItemsCollection, AgendaItemTypesCollection} from "../../utils/rest-helper";
 import format from '../../utils/date-format';
 import withData from "../../utils/withData";
@@ -133,7 +133,6 @@ class AgendaItems extends React.Component {
                     <Col sm={2}><h4>{format(itemDate, 'd')} <small>{format(itemDate, 'ccc')}</small></h4></Col>
                     <Col sm={1}><h4>{format(itemDate, 'p')}</h4></Col>
                     <Col sm={9}><h4>{item.name} <small><AgendaItemTypeName id={item.agendaitemtype_id}/></small></h4></Col>
-                    {/*<Col sm={1}><h4>{item.subscriptions.length}</h4></Col>*/}
                 </Row>
             </Card></Link>
         });

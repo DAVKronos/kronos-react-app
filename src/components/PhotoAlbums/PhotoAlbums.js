@@ -3,16 +3,18 @@ import {Col, Row} from 'react-bootstrap';
 import PhotoAlbumCover from "./PhotoAlbumCover";
 import {PhotoAlbumsCollection} from "../../utils/rest-helper";
 import withData from "../../utils/withData";
+import DefaultSpinner from "../Spinner";
 
 
 function PhotoAlbums(props) {
-    let photoAlbums = props.data || [];
+    let {data: photoAlbums, loading} = props;
     return <React.Fragment>
         <Row>
             <Col><h1>Fotoalbum</h1></Col>
         </Row>
         <Row>
-            {photoAlbums.map(photoAlbum => {
+            {loading && <DefaultSpinner/>}
+            {photoAlbums && photoAlbums.map(photoAlbum => {
                 return <Col key={photoAlbum.id} sm={6} md={4}>
                     <PhotoAlbumCover photoAlbum={photoAlbum}/>
                 </Col>

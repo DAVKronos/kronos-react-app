@@ -1,5 +1,4 @@
 import React from "react";
-import {getAPIHostUrl} from "../../utils/rest-helper";
 
 //TODO Add sponsors either directly of from Rails url.
 const Sponsors = () => {

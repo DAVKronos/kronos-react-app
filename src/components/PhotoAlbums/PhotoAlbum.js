@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Row, Col, Card, Pagination, Spinner} from 'react-bootstrap';
+import {Row, Col, Card, Pagination} from 'react-bootstrap';
 import {getAPIHostUrl, PhotoAlbumsCollection, transformObject} from "../../utils/rest-helper";
 import format from '../../utils/date-format';
 import withData from "../../utils/withData";
