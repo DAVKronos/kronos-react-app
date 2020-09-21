@@ -105,7 +105,7 @@ class Results extends React.Component {
                     <Accordion defaultActiveKey="0">
                     {agendaItems && agendaItems.map((item, index) => {
                         let itemDate = new Date(item.date);
-                        return <Card>
+                        return <Card key={item.id}>
                                 <Accordion.Toggle as={Card.Header} eventKey={index} className='agenda-item result'>
                                     <Row>
                                         <Col sm={2}><h4>{format(itemDate, 'd')} <small>{format(itemDate, 'ccc')}</small></h4></Col>

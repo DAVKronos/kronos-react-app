@@ -29,9 +29,7 @@ function sortPhotoAlbums(a,b) {
 
 function dataFunction() {
     return PhotoAlbumsCollection.getAll({}).then(photoAlbums => {
-        return  Promise.all(photoAlbums.sort(sortPhotoAlbums).map((item, index) => {
-            return PhotoAlbumsCollection.get(item.id)
-        }));
+        return  photoAlbums.sort(sortPhotoAlbums);
     });
 }
 
